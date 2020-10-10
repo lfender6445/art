@@ -1,0 +1,11 @@
+#! /bin/sh
+cd ~/source/art
+echo 'starting sync'
+git stash
+git pull --rebase
+python make_readme.py
+git stash pop
+git add .
+msg="cron sync - $(/bin/date)"
+git commit -m "${msg}"
+git push
