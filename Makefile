@@ -1,2 +1,2 @@
 sync:
-	cd ~/source/notes && ./script/sync.sh
+	cd ~/source/art && ./sync.sh
