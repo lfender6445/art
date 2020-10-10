@@ -1,4 +1,7 @@
+#!/usr/bin/python3
 import glob
+import subprocess
+from datetime import datetime
 
 ART_PATTERN = "album/*.jpg"
 
@@ -6,6 +9,11 @@ rule = "\n---------------"
 
 TITLE_RE = r"[\/](.+).*\]"
 GH_RAW = 'https://raw.githubusercontent.com/lfender6445/art/master/album/'
+
+
+def du(path):
+    """disk usage in human readable format (e.g. '2,1GB')"""
+    return subprocess.check_output(['du','-sh', path]).split()[0].decode('utf-8')
 
 def markdown_image(img):
     return f"![{img}]({img})"
@@ -22,10 +30,19 @@ def markdown_title(img):
     print('making title', title)
     return f"## [{title}]({GH_RAW}{title})"
 
+def size():
+    return f"\n - size: {du('./album')}"
+
+def last_run():
+    return f'\n - last run: {datetime.now().strftime("%Y-%b-%d, %A %I:%M:%S")}'
+
 def make_readme():
     file_handle = open('README.md', 'w')
 
     file_handle.write(title())
+    file_handle.write(size())
+    file_handle.write(last_run())
+    file_handle.write(rule)
 
     entries = []
 
